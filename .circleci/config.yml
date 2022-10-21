@@ -36,8 +36,7 @@ jobs:
     resource_class: medium
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.7
+      - setup_remote_docker
       - run: |
           docker image list --format '{{.Repository}}:{{.Tag}}'
       - run: |
