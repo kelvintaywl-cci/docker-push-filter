@@ -1,34 +1,5 @@
 version: 2.1
 
-commands:
-  build-docker-image:
-    parameters:
-      dockerfile:
-        type: string
-      tag:
-        type: string
-      context:
-        type: string
-        default: '.'
-    steps:
-      - run:
-          name: Build image << parameters.tag >>
-          command: |
-            docker image build --tag << parameters.tag >> --file << parameters.dockerfile >> << parameters.context >>
-  push-docker-images:
-    parameters:
-      filter-string:
-        type: string
-    steps:
-      - run:
-          name: (Mock) Push images with filter << parameters.filter-string >>
-          command: |
-            # push only images with << parameters.filter-string >> filter
-            for docker_img in $(docker image list --format "{{.Repository}}:{{.Tag}}" --filter << parameters.filter-string >>)
-            do
-              echo "mock docker push ${docker_img}"
-            done        
-
 jobs:
   build:
     docker:
@@ -37,20 +8,4 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: |
-          docker image list --format '{{.Repository}}:{{.Tag}}'
-      - run: |
-          docker image build --tag kelvintaywl-cci/foo:123 --file ./Dockerfile.foo .
-      - build-docker-image:
-          tag: kelvintaywl-cci/foo:123
-          dockerfile: ./Dockerfile.foo
-      - build-docker-image:
-          tag: kelvintaywl-cci/bar:456
-          dockerfile: ./Dockerfile.bar   
-      - run: |
-          # check all images, both pulled and built
-          docker image list --format '{{.Repository}}:{{.Tag}}'
-      - push-docker-images:
-          filter-string: label=maintainer=foo@example.com
-      - push-docker-images:
-          filter-string: label=maintainer=bar@example.com
+
