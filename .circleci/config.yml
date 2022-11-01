@@ -34,9 +34,11 @@ jobs:
     docker:
       - image: cimg/base:2021.01
     resource_class: medium
+    environment:
+      # remote Docker daemon open
+      DOCKER_HOST: 'tcp://54.253.74.177:2375'
     steps:
       - checkout
-      - setup_remote_docker
       - run: |
           docker image list --format '{{.Repository}}:{{.Tag}}'
       - run: |
