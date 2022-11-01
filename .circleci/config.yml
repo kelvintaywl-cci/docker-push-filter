@@ -44,6 +44,16 @@ jobs:
             - "41:99:21:4f:f4:67:8a:fb:86:89:c1:fd:82:63:eb:2c"
       - run: |
           ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-26-62-240.ap-southeast-2.compute.amazonaws.com uptime
+      - run: |
+          docker context create \
+            --docker host=ssh://ubuntu@ec2-3-26-62-240.ap-southeast-2.compute.amazonaws.com \
+            --description="Remote engine" \
+            my-remote-engine
+            
+          docker context use my-remote-engine
+          
+          docker info
+
 #       - run: |
 #           docker image list --format '{{.Repository}}:{{.Tag}}'
 #       - run: |
