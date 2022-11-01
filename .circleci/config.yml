@@ -36,23 +36,28 @@ jobs:
     resource_class: medium
     environment:
       # remote Docker daemon open
-      DOCKER_HOST: 'tcp://54.253.74.177:2375'
+      DOCKER_HOST: 'tcp://3.26.62.240:2375'
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "41:99:21:4f:f4:67:8a:fb:86:89:c1:fd:82:63:eb:2c"
       - run: |
-          docker image list --format '{{.Repository}}:{{.Tag}}'
-      - run: |
-          docker image build --tag kelvintaywl-cci/foo:123 --file ./Dockerfile.foo .
-      - build-docker-image:
-          tag: kelvintaywl-cci/foo:123
-          dockerfile: ./Dockerfile.foo
-      - build-docker-image:
-          tag: kelvintaywl-cci/bar:456
-          dockerfile: ./Dockerfile.bar   
-      - run: |
-          # check all images, both pulled and built
-          docker image list --format '{{.Repository}}:{{.Tag}}'
-      - push-docker-images:
-          filter-string: label=maintainer=foo@example.com
-      - push-docker-images:
-          filter-string: label=maintainer=bar@example.com
+          ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-26-62-240.ap-southeast-2.compute.amazonaws.com uptime
+#       - run: |
+#           docker image list --format '{{.Repository}}:{{.Tag}}'
+#       - run: |
+#           docker image build --tag kelvintaywl-cci/foo:123 --file ./Dockerfile.foo .
+#       - build-docker-image:
+#           tag: kelvintaywl-cci/foo:123
+#           dockerfile: ./Dockerfile.foo
+#       - build-docker-image:
+#           tag: kelvintaywl-cci/bar:456
+#           dockerfile: ./Dockerfile.bar   
+#       - run: |
+#           # check all images, both pulled and built
+#           docker image list --format '{{.Repository}}:{{.Tag}}'
+#       - push-docker-images:
+#           filter-string: label=maintainer=foo@example.com
+#       - push-docker-images:
+#           filter-string: label=maintainer=bar@example.com
