@@ -54,20 +54,18 @@ jobs:
           
           docker info
 
-#       - run: |
-#           docker image list --format '{{.Repository}}:{{.Tag}}'
-#       - run: |
-#           docker image build --tag kelvintaywl-cci/foo:123 --file ./Dockerfile.foo .
-#       - build-docker-image:
-#           tag: kelvintaywl-cci/foo:123
-#           dockerfile: ./Dockerfile.foo
-#       - build-docker-image:
-#           tag: kelvintaywl-cci/bar:456
-#           dockerfile: ./Dockerfile.bar   
-#       - run: |
-#           # check all images, both pulled and built
-#           docker image list --format '{{.Repository}}:{{.Tag}}'
-#       - push-docker-images:
-#           filter-string: label=maintainer=foo@example.com
-#       - push-docker-images:
-#           filter-string: label=maintainer=bar@example.com
+      - run: |
+          docker image list --format '{{.Repository}}:{{.Tag}}'
+      - build-docker-image:
+          tag: kelvintaywl-cci/foo:123
+          dockerfile: ./Dockerfile.foo
+      - build-docker-image:
+          tag: kelvintaywl-cci/bar:456
+          dockerfile: ./Dockerfile.bar   
+      - run: |
+          # check all images, both pulled and built
+          docker image list --format '{{.Repository}}:{{.Tag}}'
+      - push-docker-images:
+          filter-string: label=maintainer=foo@example.com
+      - push-docker-images:
+          filter-string: label=maintainer=bar@example.com
