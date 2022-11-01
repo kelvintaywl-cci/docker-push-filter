@@ -34,9 +34,9 @@ jobs:
     docker:
       - image: cimg/base:2021.01
     resource_class: medium
-    environment:
-      # remote Docker daemon open
-      DOCKER_HOST: 'tcp://3.26.62.240:2375'
+#     environment:
+#       # remote Docker daemon open
+#       DOCKER_HOST: 'tcp://3.26.62.240:2375'
     steps:
       - checkout
       - add_ssh_keys:
